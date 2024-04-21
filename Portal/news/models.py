@@ -65,10 +65,13 @@ class Post(models.Model):
     def preview(self):
         return f'{self.text_article[:125]}...'
 
+    def __str__(self):
+        return f'{self.heading.title()} : {self.text_article}'
+
 
 class PostCategory(models.Model):
     post_id = models.ForeignKey(Post, on_delete=models.CASCADE)
-    category_id = models.ForeignKey(Category, models.CASCADE)
+    category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
 
 
 class Comment(models.Model):
