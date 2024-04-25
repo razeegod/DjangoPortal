@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.urls import reverse
 
 news = 'N'
 article = 'A'
@@ -14,6 +14,9 @@ articles_types = [
 class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     rating = models.FloatField(default=0.0)
+
+    def __str__(self):
+        return f'{self.user.username}'
 
     def update_rating(self):
         sum_rating_com_to_auth = 0
@@ -44,6 +47,9 @@ class Author(models.Model):
 class Category(models.Model):
     name = models.CharField(unique=True, max_length=255)
 
+    def __str__(self):
+        return f'{self.name}'
+
 
 class Post(models.Model):
     author_id = models.ForeignKey(Author, on_delete=models.CASCADE)
@@ -53,6 +59,9 @@ class Post(models.Model):
     heading = models.CharField(max_length=255)
     text_article = models.TextField()
     rating = models.FloatField(default=0.0)
+
+    def get_absolute_url(self):
+        return reverse('new', args=[str(self.id)])
 
     def like(self):
         self.rating += 1

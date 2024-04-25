@@ -1,19 +1,19 @@
 {% extends 'flatpages/default.html' %}
 {% load custom_tags %}
 {% block title %}
-Новости
+Статьи
 {% endblock title %}
 
 {% block content %}
-   <h1>Все новости</h1>
+   <h1>Все статьи</h1>
    <h3>{{ time_now|date:'M d Y' }}</h3>
-    <h3>Количество новостей: {{ news|length }}</h3>
+    <h3>Количество статей: {{ articles|length }}</h3>
    <!-- Если в переменной next_sale будет None,
    то выведется указанный в фильтре текст -->
    <h3> {{ next_sale|default_if_none:"Чуть позже сообщим о распродаже!" }} </h3>
 
    <hr>
-   {% if news %}
+   {% if articles %}
        <table>
            <tr>
                <td>Заголовок</td>
@@ -21,17 +21,17 @@
                <td>Дата выхода</td>
            </tr>
 
-           {% for new in news %}
+           {% for article in articles %}
            <tr>
-               <td>{{ new.heading }}</td>
-               <td>{{ new.text_article|truncatewords:2 }}</td>
-               <td>{{ new.time_in|date:'M d Y' }}</td>
+               <td>{{ article.heading }}</td>
+               <td>{{ article.text_article|truncatewords:2 }}</td>
+               <td>{{ article.time_in|date:'M d Y' }}</td>
            </tr>
            {% endfor %}
 
        </table>
    {% else %}
-       <h2>Новостей нет!</h2>
+       <h2>Статей нет!</h2>
    {% endif %}
     {% if page_obj.has_previous %}
         <a href="?{% url_replace page=1 %}">1</a>
