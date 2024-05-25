@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import NewsList, NewDetail, NewsSearch, NewCreate, NewEdit, NewDelete
+from .views import NewsList, NewDetail, NewsSearch, NewCreate, NewEdit, NewDelete, print_cookies
 
 urlpatterns = [
     path('', NewsList.as_view(), name='news'),
@@ -8,4 +8,5 @@ urlpatterns = [
     path('create/', NewCreate.as_view(), name='new_create'),
     path('<int:id>/edit/', NewEdit.as_view(), name='new_edit'),
     path('<int:id>/delete/', NewDelete.as_view(), name='new_delete'),
+    path('cookie/', print_cookies, name='cookie')
 ]

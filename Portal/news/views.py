@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -44,7 +45,8 @@ class NewDetail(DetailView):
     pk_url_kwarg = 'id'
 
 
-class NewCreate(CreateView):
+class NewCreate(PermissionRequiredMixin, CreateView):
+    permission_required = ('News.add_post')
     form_class = PostForm
     model = Post
     template_name = 'create.html'
@@ -56,7 +58,8 @@ class NewCreate(CreateView):
         return super().form_valid(form)
 
 
-class NewEdit(UpdateView):
+class NewEdit(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
+    permission_required = ('News.change_post')
     model = Post
     form_class = PostForm
     template_name = 'create.html'
@@ -81,7 +84,8 @@ class ArticlesList(ListView):
     def get_queryset(self):
         return Post.objects.filter(_type='A')
 
-class ArticleCreate(CreateView):
+class ArticleCreate(PermissionRequiredMixin, CreateView):
+    permission_required = ('News.add_post')
     form_class = PostForm
     model = Post
     template_name = 'create.html'
@@ -92,3 +96,7 @@ class ArticleCreate(CreateView):
         new._type = 'A'
         return super().form_valid(form)
 
+
+def print_cookies(request):
+    print(request.COOKIES, request.headers.get('User-Agent'), request.session, request.user)
+    return render(request, 'flatpages/default.html', )
